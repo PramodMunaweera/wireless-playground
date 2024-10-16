@@ -1,0 +1,76 @@
+user@ubuntu:~/Desktop/wireless-playground/ASIC/Lab 2/tta$ tcedisasm -s -n processor.adf iir.tpef 
+CODE 0 ;
+
+:procedure _start;
+_start:
+	0 -> RF_1.0, gcu.ra -> LSU.in2, 4 -> ADDSH.in2, 16777208 -> ADDSH.in1t.sub ;	# @0
+	main -> gcu.pc.call, 8 -> ADDSH.in2, ADDSH.out1 -> LSU.in1t.stw, ADDSH.out1 -> ADDSH.in1t.sub ;	# @1
+	0 -> LSU.in2, ADDSH.out1 -> ADDSH.in2, 4 -> ADDSH.in1t.add, ADDSH.out1 -> RF_0.0 ;	# @2
+	..., ..., ..., ADDSH.out1 -> LSU.in1t.stw ;	# @3
+	..., ..., ..., ... ;	# @4
+	..., ..., ..., _exit -> gcu.pc.call ;	# @5
+	..., ..., ..., ... ;	# @6
+	..., ..., ..., ... ;	# @7
+	..., ..., ..., ... ;	# @8
+:procedure _exit;
+_exit:
+	..., ..., ..., 4 -> RF_0.1 ;	# @9
+	..., 10 -> gcu.pc.jump, RF_0.1 -> LSU.in1t.stw, 0 -> LSU.in2 ;	# @10
+	..., ..., ..., ... ;	# @11
+	..., ..., ..., ... ;	# @12
+	..., ..., ..., ... ;	# @13
+:procedure filterloop;
+filterloop:
+	0 -> RF_2.2, 0 -> RF_1.2, 0 -> INPUT.in1t.fifo_s16_stream_in, 0 -> RF_0.2 ;	# @14
+	..., RF_0.2 -> RF_2.1, INPUT.out1 -> RF_1.1, INPUT.out2 -> RF_0.1 ;	# @15
+	0 -> INPUT.in1t.fifo_s16_stream_in, -64554 -> MUL.in1t.mul, RF_1.2 -> MUL.in2, RF_1.2 -> RF_0.3 ;	# @16
+	0 -> ALU.in1t.eq, RF_1.1 -> ALU.in2, RF_2.2 -> MUL.in2, 32342 -> MUL.in1t.mul ;	# @17
+	ALU.out1 -> BOOL.0, RF_2.1 -> MUL.in2, 15 -> ADDSH.in1t.shr, MUL.out1 -> ADDSH.in2 ;	# @18
+	INPUT.out2 -> RF_1.3, -64977 -> MUL.in1t.mul, RF_0.2 -> ADDSH.in1t.sub, ADDSH.out1 -> ADDSH.in2 ;	# @19
+	INPUT.out1 -> RF_1.1, 15 -> ADDSH.in1t.shr, MUL.out1 -> ADDSH.in2, ADDSH.out1 -> RF_0.2 ;	# @20
+	15 -> ALU.in1t.shr, MUL.out1 -> ALU.in2, RF_0.2 -> ADDSH.in1t.sub, ADDSH.out1 -> ADDSH.in2 ;	# @21
+	RF_0.1 -> RF_2.1, RF_2.1 -> RF_0.2, RF_0.1 -> ADDSH.in1t.add, ADDSH.out1 -> ADDSH.in2 ;	# @22
+	RF_1.3 -> RF_0.1, ALU.out1 -> ADDSH.in2, RF_0.3 -> RF_2.2, ADDSH.out1 -> ADDSH.in1t.add ;	# @23
+	!BOOL.0 19 -> gcu.pc.jump, ADDSH.out1 -> OUTPUT.in1t.fifo_s16_stream_out, ..., ADDSH.out1 -> RF_1.2 ;	# @24
+	!BOOL.0 RF_1.2 -> MUL.in2, !BOOL.0 -64554 -> MUL.in1t.mul, !BOOL.0 0 -> INPUT.in1t.fifo_s16_stream_in, !BOOL.0 RF_1.2 -> RF_0.3 ;	# @25
+	!BOOL.0 RF_1.1 -> ALU.in2, !BOOL.0 32342 -> MUL.in1t.mul, !BOOL.0 0 -> ALU.in1t.eq, !BOOL.0 RF_2.2 -> MUL.in2 ;	# @26
+	!BOOL.0 RF_2.1 -> MUL.in2, !BOOL.0 15 -> ADDSH.in1t.shr, !BOOL.0 ALU.out1 -> BOOL.0, !BOOL.0 MUL.out1 -> ADDSH.in2 ;	# @27
+	..., ..., ..., gcu.ra -> gcu.pc.jump ;	# @28
+	..., ..., ..., ... ;	# @29
+	..., ..., ..., ... ;	# @30
+	..., ..., ..., ... ;	# @31
+:procedure main;
+main:
+	0 -> RF_0.1, gcu.ra -> LSU.in2, RF_0.0 -> ADDSH.in1t.sub, 4 -> ADDSH.in2 ;	# @32
+	..., ADDSH.out1 -> LSU.in1t.stw, ..., ADDSH.out1 -> RF_0.0 ;	# @33
+	..., RF_0.1 -> ADDSH.in2, 11 -> ADDSH.in1t.add, 0 -> INPUT.in1t.fifo_s16_stream_in ;	# @34
+	0 -> INPUT.in1t.fifo_s16_stream_in, ADDSH.out1 -> RF_0.1, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out ;	# @35
+	ADDSH.out1 -> ALU.in2, 0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, INPUT.out1 -> RF_2.1 ;	# @36
+	44 -> ALU.in1t.eq, 0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, INPUT.out1 -> RF_2.1 ;	# @37
+	ALU.out1 -> BOOL.0, 0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, INPUT.out1 -> RF_2.1 ;	# @38
+	..., 0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, INPUT.out1 -> RF_0.2 ;	# @39
+	0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, ... ;	# @40
+	0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, ... ;	# @41
+	0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, !BOOL.0 34 -> gcu.pc.jump ;	# @42
+	0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, ... ;	# @43
+	0 -> INPUT.in1t.fifo_s16_stream_in, INPUT.out1 -> RF_2.1, INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, ... ;	# @44
+	INPUT.out1 -> RF_2.1, ..., INPUT.out2 -> OUTPUT.in1t.fifo_s16_stream_out, ... ;	# @45
+	..., ..., ..., filterloop -> gcu.pc.call ;	# @46
+	..., ..., ..., ... ;	# @47
+	..., ..., ..., ... ;	# @48
+	..., ..., ..., ... ;	# @49
+	0 -> RF_1.0, RF_0.0 -> ADDSH.in2, 4 -> ADDSH.in1t.add, RF_0.0 -> LSU.in1t.ldw ;	# @50
+	..., ..., ..., ADDSH.out1 -> RF_0.0 ;	# @51
+	..., ..., ..., ... ;	# @52
+	..., ..., ..., LSU.out1 -> gcu.ra ;	# @53
+	..., ..., ..., gcu.ra -> gcu.pc.jump ;	# @54
+	..., ..., ..., ... ;	# @55
+	..., ..., ..., ... ;	# @56
+	..., ..., ..., ... ;	# @57
+
+
+DATA data 4 ;
+
+DA 5 ;
+
+

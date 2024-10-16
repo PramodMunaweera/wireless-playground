@@ -1,0 +1,269 @@
+Assembly Code:
+
+user@ubuntu:~/Desktop/wireless-playground/ASIC/Lab 2/nios$ nios2-elf-objdump -d software/iir-nios/iir-nios.elf
+
+software/iir-nios/iir-nios.elf:     file format elf32-littlenios2
+
+
+Disassembly of section .entry:
+
+00008000 <__reset>:
+    8000:	00810014 	movui	r2,1024
+    8004:	1001483a 	initi	r2
+    8008:	10bff804 	addi	r2,r2,-32
+    800c:	00bffd16 	blt	zero,r2,8004 <__reset+0x4>
+    8010:	00400034 	movhi	at,0
+    8014:	08600814 	ori	at,at,32800
+    8018:	0800683a 	jmp	at
+
+0000801c <_exit>:
+    801c:	00000000 	call	0 <__alt_mem_mem-0x8000>
+
+Disassembly of section .text:
+
+00008020 <_start>:
+    8020:	00810014 	movui	r2,1024
+    8024:	10000033 	initd	0(r2)
+    8028:	10bff804 	addi	r2,r2,-32
+    802c:	00bffd16 	blt	zero,r2,8024 <_start+0x4>
+    8030:	06c00074 	movhi	sp,1
+    8034:	dec00014 	ori	sp,sp,0
+    8038:	06800074 	movhi	gp,1
+    803c:	d680dd14 	ori	gp,gp,884
+    8040:	00800034 	movhi	r2,0
+    8044:	10a0df14 	ori	r2,r2,33660
+    8048:	00c00034 	movhi	r3,0
+    804c:	18e0e214 	ori	r3,r3,33672
+    8050:	10c00326 	beq	r2,r3,8060 <_start+0x40>
+    8054:	10000015 	stw	zero,0(r2)
+    8058:	10800104 	addi	r2,r2,4
+    805c:	10fffd36 	bltu	r2,r3,8054 <_start+0x34>
+    8060:	00081bc0 	call	81bc <alt_load>
+    8064:	00082c00 	call	82c0 <alt_main>
+
+00008068 <alt_after_alt_main>:
+    8068:	003fff06 	br	8068 <alt_after_alt_main>
+
+0000806c <mul>:
+    806c:	2145383a 	mul	r2,r4,r5
+    8070:	1005d3fa 	srai	r2,r2,15
+    8074:	f800283a 	ret
+
+00008078 <filter>:
+    8078:	00bffff4 	movhi	r2,65535
+    807c:	10808bc4 	addi	r2,r2,559
+    8080:	288b383a 	mul	r5,r5,r2
+    8084:	00fffff4 	movhi	r3,65535
+    8088:	18c0f584 	addi	r3,r3,982
+    808c:	200893fa 	slli	r4,r4,15
+    8090:	2805d3fa 	srai	r2,r5,15
+    8094:	d9400017 	ldw	r5,0(sp)
+    8098:	38cf383a 	mul	r7,r7,r3
+    809c:	300c93fa 	slli	r6,r6,15
+    80a0:	2009d3fa 	srai	r4,r4,15
+    80a4:	295f95a4 	muli	r5,r5,32342
+    80a8:	3807d3fa 	srai	r3,r7,15
+    80ac:	300dd3fa 	srai	r6,r6,15
+    80b0:	2085883a 	add	r2,r4,r2
+    80b4:	280bd3fa 	srai	r5,r5,15
+    80b8:	10c5c83a 	sub	r2,r2,r3
+    80bc:	1185883a 	add	r2,r2,r6
+    80c0:	1145c83a 	sub	r2,r2,r5
+    80c4:	f800283a 	ret
+
+000080c8 <filterloop>:
+    80c8:	0011c072 	custom	1,r8,zero,zero
+    80cc:	0009c032 	custom	0,r4,zero,zero
+    80d0:	000f883a 	mov	r7,zero
+    80d4:	0007883a 	mov	r3,zero
+    80d8:	000d883a 	mov	r6,zero
+    80dc:	0005883a 	mov	r2,zero
+    80e0:	033ffff4 	movhi	r12,65535
+    80e4:	63008bc4 	addi	r12,r12,559
+    80e8:	02fffff4 	movhi	r11,65535
+    80ec:	5ac0f584 	addi	r11,r11,982
+    80f0:	00000406 	br	8104 <filterloop+0x3c>
+    80f4:	2005883a 	mov	r2,r4
+    80f8:	2807883a 	mov	r3,r5
+    80fc:	5011883a 	mov	r8,r10
+    8100:	4809883a 	mov	r4,r9
+    8104:	200a93fa 	slli	r5,r4,15
+    8108:	1315383a 	mul	r10,r2,r12
+    810c:	1ad3383a 	mul	r9,r3,r11
+    8110:	300c93fa 	slli	r6,r6,15
+    8114:	5015d3fa 	srai	r10,r10,15
+    8118:	280bd3fa 	srai	r5,r5,15
+    811c:	39df95a4 	muli	r7,r7,32342
+    8120:	4813d3fa 	srai	r9,r9,15
+    8124:	300dd3fa 	srai	r6,r6,15
+    8128:	2a8b883a 	add	r5,r5,r10
+    812c:	380fd3fa 	srai	r7,r7,15
+    8130:	2a4bc83a 	sub	r5,r5,r9
+    8134:	298b883a 	add	r5,r5,r6
+    8138:	29cbc83a 	sub	r5,r5,r7
+    813c:	280dc132 	custom	4,r6,r5,zero
+    8140:	0015c072 	custom	1,r10,zero,zero
+    8144:	0013c032 	custom	0,r9,zero,zero
+    8148:	100d883a 	mov	r6,r2
+    814c:	180f883a 	mov	r7,r3
+    8150:	403fe81e 	bne	r8,zero,80f4 <filterloop+0x2c>
+    8154:	f800283a 	ret
+
+00008158 <sample_copy>:
+    8158:	0005883a 	mov	r2,zero
+    815c:	0100040e 	bge	zero,r4,8170 <sample_copy+0x18>
+    8160:	0007c032 	custom	0,r3,zero,zero
+    8164:	1807c132 	custom	4,r3,r3,zero
+    8168:	10800044 	addi	r2,r2,1
+    816c:	113ffc1e 	bne	r2,r4,8160 <sample_copy+0x8>
+    8170:	f800283a 	ret
+
+00008174 <main>:
+    8174:	defffd04 	addi	sp,sp,-12
+    8178:	dfc00215 	stw	ra,8(sp)
+    817c:	dc400115 	stw	r17,4(sp)
+    8180:	dc000015 	stw	r16,0(sp)
+    8184:	0005c0b2 	custom	2,r2,zero,zero
+    8188:	04400044 	movi	r17,1
+    818c:	04000074 	movhi	r16,1
+    8190:	84040404 	addi	r16,r16,4112
+    8194:	84400035 	stwio	r17,0(r16)
+    8198:	80000035 	stwio	zero,0(r16)
+    819c:	00080c80 	call	80c8 <filterloop>
+    81a0:	84400035 	stwio	r17,0(r16)
+    81a4:	0005883a 	mov	r2,zero
+    81a8:	dfc00217 	ldw	ra,8(sp)
+    81ac:	dc400117 	ldw	r17,4(sp)
+    81b0:	dc000017 	ldw	r16,0(sp)
+    81b4:	dec00304 	addi	sp,sp,12
+    81b8:	f800283a 	ret
+
+000081bc <alt_load>:
+    81bc:	deffff04 	addi	sp,sp,-4
+    81c0:	dfc00015 	stw	ra,0(sp)
+    81c4:	00c00074 	movhi	r3,1
+    81c8:	18e0dd04 	addi	r3,r3,-31884
+    81cc:	01000074 	movhi	r4,1
+    81d0:	2120de04 	addi	r4,r4,-31880
+    81d4:	1900061e 	bne	r3,r4,81f0 <alt_load+0x34>
+    81d8:	00c00074 	movhi	r3,1
+    81dc:	18e00804 	addi	r3,r3,-32736
+    81e0:	01000074 	movhi	r4,1
+    81e4:	21200804 	addi	r4,r4,-32736
+    81e8:	1900151e 	bne	r3,r4,8240 <alt_load+0x84>
+    81ec:	00000e06 	br	8228 <alt_load+0x6c>
+    81f0:	01400074 	movhi	r5,1
+    81f4:	2960de04 	addi	r5,r5,-31880
+    81f8:	00bfff04 	movi	r2,-4
+    81fc:	28cbc83a 	sub	r5,r5,r3
+    8200:	288a703a 	and	r5,r5,r2
+    8204:	0005883a 	mov	r2,zero
+    8208:	00000506 	br	8220 <alt_load+0x64>
+    820c:	208f883a 	add	r7,r4,r2
+    8210:	39c00017 	ldw	r7,0(r7)
+    8214:	188d883a 	add	r6,r3,r2
+    8218:	10800104 	addi	r2,r2,4
+    821c:	31c00015 	stw	r7,0(r6)
+    8220:	117ffa1e 	bne	r2,r5,820c <alt_load+0x50>
+    8224:	003fec06 	br	81d8 <alt_load+0x1c>
+    8228:	00c00074 	movhi	r3,1
+    822c:	18e0dd04 	addi	r3,r3,-31884
+    8230:	01000074 	movhi	r4,1
+    8234:	2120dd04 	addi	r4,r4,-31884
+    8238:	1900131e 	bne	r3,r4,8288 <alt_load+0xcc>
+    823c:	00000e06 	br	8278 <alt_load+0xbc>
+    8240:	01400074 	movhi	r5,1
+    8244:	29600804 	addi	r5,r5,-32736
+    8248:	00bfff04 	movi	r2,-4
+    824c:	28cbc83a 	sub	r5,r5,r3
+    8250:	288a703a 	and	r5,r5,r2
+    8254:	0005883a 	mov	r2,zero
+    8258:	00000506 	br	8270 <alt_load+0xb4>
+    825c:	208f883a 	add	r7,r4,r2
+    8260:	39c00017 	ldw	r7,0(r7)
+    8264:	188d883a 	add	r6,r3,r2
+    8268:	10800104 	addi	r2,r2,4
+    826c:	31c00015 	stw	r7,0(r6)
+    8270:	117ffa1e 	bne	r2,r5,825c <alt_load+0xa0>
+    8274:	003fec06 	br	8228 <alt_load+0x6c>
+    8278:	00083100 	call	8310 <alt_dcache_flush_all>
+    827c:	dfc00017 	ldw	ra,0(sp)
+    8280:	dec00104 	addi	sp,sp,4
+    8284:	00083281 	jmpi	8328 <alt_icache_flush_all>
+    8288:	01400074 	movhi	r5,1
+    828c:	2960dd04 	addi	r5,r5,-31884
+    8290:	00bfff04 	movi	r2,-4
+    8294:	28cbc83a 	sub	r5,r5,r3
+    8298:	288a703a 	and	r5,r5,r2
+    829c:	0005883a 	mov	r2,zero
+    82a0:	00000506 	br	82b8 <alt_load+0xfc>
+    82a4:	208f883a 	add	r7,r4,r2
+    82a8:	39c00017 	ldw	r7,0(r7)
+    82ac:	188d883a 	add	r6,r3,r2
+    82b0:	10800104 	addi	r2,r2,4
+    82b4:	31c00015 	stw	r7,0(r6)
+    82b8:	117ffa1e 	bne	r2,r5,82a4 <alt_load+0xe8>
+    82bc:	003fee06 	br	8278 <alt_load+0xbc>
+
+000082c0 <alt_main>:
+    82c0:	deffff04 	addi	sp,sp,-4
+    82c4:	0009883a 	mov	r4,zero
+    82c8:	dfc00015 	stw	ra,0(sp)
+    82cc:	00082ec0 	call	82ec <alt_irq_init>
+    82d0:	000830c0 	call	830c <alt_sys_init>
+    82d4:	d1200417 	ldw	r4,-32752(gp)
+    82d8:	d1600317 	ldw	r5,-32756(gp)
+    82dc:	d1a00217 	ldw	r6,-32760(gp)
+    82e0:	dfc00017 	ldw	ra,0(sp)
+    82e4:	dec00104 	addi	sp,sp,4
+    82e8:	00081741 	jmpi	8174 <main>
+
+000082ec <alt_irq_init>:
+    82ec:	deffff04 	addi	sp,sp,-4
+    82f0:	dfc00015 	stw	ra,0(sp)
+    82f4:	00083340 	call	8334 <altera_nios2_qsys_irq_init>
+    82f8:	00800044 	movi	r2,1
+    82fc:	1001703a 	wrctl	status,r2
+    8300:	dfc00017 	ldw	ra,0(sp)
+    8304:	dec00104 	addi	sp,sp,4
+    8308:	f800283a 	ret
+
+0000830c <alt_sys_init>:
+    830c:	f800283a 	ret
+
+00008310 <alt_dcache_flush_all>:
+    8310:	0005883a 	mov	r2,zero
+    8314:	00c10004 	movi	r3,1024
+    8318:	1000003b 	flushd	0(r2)
+    831c:	10800804 	addi	r2,r2,32
+    8320:	10fffd1e 	bne	r2,r3,8318 <alt_dcache_flush_all+0x8>
+    8324:	f800283a 	ret
+
+00008328 <alt_icache_flush_all>:
+    8328:	0009883a 	mov	r4,zero
+    832c:	01410004 	movi	r5,1024
+    8330:	000833c1 	jmpi	833c <alt_icache_flush>
+
+00008334 <altera_nios2_qsys_irq_init>:
+    8334:	000170fa 	wrctl	ienable,zero
+    8338:	f800283a 	ret
+
+0000833c <alt_icache_flush>:
+    833c:	00810004 	movi	r2,1024
+    8340:	1140012e 	bgeu	r2,r5,8348 <alt_icache_flush+0xc>
+    8344:	100b883a 	mov	r5,r2
+    8348:	214b883a 	add	r5,r4,r5
+    834c:	2005883a 	mov	r2,r4
+    8350:	00000206 	br	835c <alt_icache_flush+0x20>
+    8354:	1000603a 	flushi	r2
+    8358:	10800804 	addi	r2,r2,32
+    835c:	117ffd36 	bltu	r2,r5,8354 <alt_icache_flush+0x18>
+    8360:	210007cc 	andi	r4,r4,31
+    8364:	20000126 	beq	r4,zero,836c <alt_icache_flush+0x30>
+    8368:	1000603a 	flushi	r2
+    836c:	0000203a 	flushp
+    8370:	f800283a 	ret
+
+
+
+
